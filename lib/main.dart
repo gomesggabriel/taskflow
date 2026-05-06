@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'providers/task_provider.dart';
+import 'screens/welcome_screen.dart';
+import 'screens/lista_screen.dart';
 
 void main() {
   runApp(
@@ -19,6 +22,14 @@ class TaskFlowApp extends StatelessWidget {
     return MaterialApp(
       title: 'TaskFlow',
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('pt', 'BR'),
+      ],
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
@@ -32,41 +43,24 @@ class TaskFlowApp extends StatelessWidget {
           surfaceTintColor: Colors.transparent,
           elevation: 0,
         ),
+        cardTheme: CardThemeData(
+          elevation: 0,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide: BorderSide(color: Colors.grey.shade300),
+          ),
+        ),
       ),
-      home: Consumer<TaskProvider>(
-        builder: (context, provider, _) {
-          return Scaffold(
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.task_alt_rounded,
-                      size: 80, color: Color(0xFF1565C0)),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'TaskFlow',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF1565C0),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    '${provider.tasks.length} tarefa(s) carregada(s) do banco',
-                    style: const TextStyle(fontSize: 16, color: Colors.grey),
-                  ),
-                  const SizedBox(height: 4),
-                  const Text(
-                    'Provider + SQLite configurados',
-                    style: TextStyle(fontSize: 14, color: Colors.blueGrey),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
+      initialRoute: '/',
+      routes: {
+        '/': (_) => const WelcomeScreen(),
+        '/lista': (_) => const ListaScreen(),
+      },
     );
   }
 }
