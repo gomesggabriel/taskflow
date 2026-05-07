@@ -4,6 +4,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'providers/task_provider.dart';
 import 'screens/welcome_screen.dart';
 import 'screens/lista_screen.dart';
+import 'screens/detalhe_screen.dart';
+import 'screens/formulario_screen.dart';
 
 void main() {
   runApp(
@@ -45,7 +47,8 @@ class TaskFlowApp extends StatelessWidget {
         ),
         cardTheme: CardThemeData(
           elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         ),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
@@ -56,10 +59,14 @@ class TaskFlowApp extends StatelessWidget {
           ),
         ),
       ),
+     
       initialRoute: '/',
       routes: {
         '/': (_) => const WelcomeScreen(),
         '/lista': (_) => const ListaScreen(),
+        '/detalhe': (_) => const DetalheScreen(),
+        '/inserir': (_) => const FormularioScreen(),
+        '/editar': (_) => const FormularioScreen(),
       },
     );
   }

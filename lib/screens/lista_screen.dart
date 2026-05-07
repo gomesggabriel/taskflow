@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 import '../providers/task_provider.dart';
 import '../models/task.dart';
+import '../widgets/task_card.dart';
 
 class ListaScreen extends StatelessWidget {
   const ListaScreen({super.key});
@@ -76,42 +76,16 @@ class _TaskList extends StatelessWidget {
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 12),
       itemCount: tasks.length,
       itemBuilder: (context, index) {
         final task = tasks[index];
-        return Card(
-          margin: const EdgeInsets.only(bottom: 10),
-          child: ListTile(
-            leading: Icon(
-              task.realizada
-                  ? Icons.check_circle_outline
-                  : task.atrasada
-                      ? Icons.warning_amber_rounded
-                      : Icons.radio_button_unchecked,
-              color: task.realizada
-                  ? Colors.green
-                  : task.atrasada
-                      ? Colors.red
-                      : Colors.blue,
-            ),
-            title: Text(
-              task.titulo,
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                decoration:
-                    task.realizada ? TextDecoration.lineThrough : null,
-              ),
-            ),
-            subtitle: Text(
-              DateFormat('dd/MM/yyyy').format(task.dataDateTime),
-              style: TextStyle(
-                  color: task.atrasada ? Colors.red : Colors.grey.shade600),
-            ),
-            trailing: task.importante
-                ? const Icon(Icons.star_rounded, color: Colors.amber)
-                : null,
-          ),
+        return TaskCard(
+          task: task,
+          onTap: () => Navigator.pushNamed(context, '/detalhe',
+              arguments: task),
+          onDelete: () =>
+              context.read<TaskProvider>().deleteTask(task.id!),
         );
       },
     );
