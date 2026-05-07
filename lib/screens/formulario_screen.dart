@@ -87,7 +87,7 @@ class _FormularioScreenState extends State<FormularioScreen> {
         dataPrevista: dataStr,
         importante: _importante,
         prioridade: _prioridade,
-       
+        // NOTE: 'realizada' cannot be edited here (requirement 4)
       );
       await provider.updateTask(updated);
       if (mounted) {
@@ -149,7 +149,7 @@ class _FormularioScreenState extends State<FormularioScreen> {
             ),
             const SizedBox(height: 20),
 
-            // Descricao
+            // Description
             _SectionLabel(label: 'Descrição'),
             TextFormField(
               controller: _descricaoCtrl,
@@ -160,7 +160,7 @@ class _FormularioScreenState extends State<FormularioScreen> {
             ),
             const SizedBox(height: 20),
 
-            // Data
+            // Date picker
             _SectionLabel(label: 'Data Prevista *'),
             GestureDetector(
               onTap: _pickDate,

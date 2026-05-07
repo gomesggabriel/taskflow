@@ -30,7 +30,7 @@ class DetalheScreen extends StatelessWidget {
       ),
       body: Consumer<TaskProvider>(
         builder: (context, provider, _) {
-         
+          // Get the latest version of the task from the provider
           final current = provider.tasks
               .cast<Task?>()
               .firstWhere((t) => t?.id == task.id, orElse: () => null);
@@ -59,7 +59,7 @@ class DetalheScreen extends StatelessWidget {
                       fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 12),
-                
+                // ID (shown only on detail screen as per requirement)
                 _InfoCard(
                   icon: Icons.tag_rounded,
                   label: 'ID',
@@ -68,7 +68,7 @@ class DetalheScreen extends StatelessWidget {
                       TextStyle(fontSize: 16, color: Colors.grey.shade600),
                 ),
                 const SizedBox(height: 12),
-                
+                // Description (shown only on detail screen)
                 _InfoCard(
                   icon: Icons.description_outlined,
                   label: 'Descrição',

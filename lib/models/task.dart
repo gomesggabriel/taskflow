@@ -2,10 +2,10 @@ class Task {
   int? id;
   String titulo;
   String descricao;
-  String dataPrevista; // 'yyyy-MM-dd'
+  String dataPrevista; // stored as 'yyyy-MM-dd' text in SQLite
   bool importante;
   bool realizada;
-  String prioridade; // Extra
+  String prioridade; // atributo extra: 'baixa', 'media', 'alta'
 
   Task({
     this.id,
