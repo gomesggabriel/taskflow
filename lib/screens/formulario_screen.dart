@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../models/task.dart';
 import '../providers/task_provider.dart';
-import '../widgets/task_card.dart';
 
 class FormularioScreen extends StatefulWidget {
   const FormularioScreen({super.key});
@@ -136,7 +135,7 @@ class _FormularioScreenState extends State<FormularioScreen> {
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            _SectionLabel(label: 'Título *'),
+            const _SectionLabel(label: 'Título *'),
             TextFormField(
               controller: _tituloCtrl,
               decoration: _inputDecoration(
@@ -147,7 +146,7 @@ class _FormularioScreenState extends State<FormularioScreen> {
             ),
             const SizedBox(height: 20),
 
-            _SectionLabel(label: 'Descrição'),
+            const _SectionLabel(label: 'Descrição'),
             TextFormField(
               controller: _descricaoCtrl,
               decoration: _inputDecoration(
@@ -157,7 +156,7 @@ class _FormularioScreenState extends State<FormularioScreen> {
             ),
             const SizedBox(height: 20),
 
-            _SectionLabel(label: 'Data Prevista *'),
+            const _SectionLabel(label: 'Data Prevista *'),
             GestureDetector(
               onTap: _pickDate,
               child: Container(
@@ -194,7 +193,7 @@ class _FormularioScreenState extends State<FormularioScreen> {
             ),
             const SizedBox(height: 20),
 
-            _SectionLabel(label: 'Prioridade (atributo extra)'),
+            const _SectionLabel(label: 'Prioridade (atributo extra)'),
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -250,7 +249,7 @@ class _FormularioScreenState extends State<FormularioScreen> {
                 ),
                 value: _importante,
                 onChanged: (v) => setState(() => _importante = v),
-                activeColor: Colors.amber,
+                activeThumbColor: Colors.amber,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14)),
               ),

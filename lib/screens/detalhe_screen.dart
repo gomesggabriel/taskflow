@@ -22,9 +22,11 @@ class DetalheScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.edit_outlined),
             tooltip: 'Editar',
-            onPressed: () =>
-                Navigator.pushNamed(context, '/editar', arguments: task)
-                    .then((_) => Navigator.pop(context)),
+            onPressed: () async {
+                await Navigator.pushNamed(context, '/editar',
+                    arguments: task);
+                if (context.mounted) Navigator.pop(context);
+              },
           ),
         ],
       ),

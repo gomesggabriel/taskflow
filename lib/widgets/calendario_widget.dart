@@ -5,11 +5,13 @@ import '../models/task.dart';
 class CalendarioWidget extends StatefulWidget {
   final List<Task> tasks;
   final Function(Task) onTaskTap;
+  final DateTime? initialDate;
 
   const CalendarioWidget({
     super.key,
     required this.tasks,
     required this.onTaskTap,
+    this.initialDate,
   });
 
   @override
@@ -20,15 +22,18 @@ class _CalendarioWidgetState extends State<CalendarioWidget> {
   late DateTime _mesSelecionado;
   late DateTime _diaSelecionado;
   late PageController _pageController;
-  int _paginaInicial = 600;
+  static const int _paginaBase = 600;
 
   @override
   void initState() {
     super.initState();
     final agora = DateTime.now();
-    _mesSelecionado = DateTime(agora.year, agora.month);
-    _diaSelecionado = DateTime(agora.year, agora.month, agora.day);
-    _pageController = PageController(initialPage: _paginaInicial);
+    final destino = widget.initialDate ?? agora;
+    final diffMeses =
+        (destino.year - agora.year) * 12 + (destino.month - agora.month);
+    _mesSelecionado = DateTime(destino.year, destino.month);
+    _diaSelecionado = DateTime(destino.year, destino.month, destino.day);
+    _pageController = PageController(initialPage: _paginaBase + diffMeses);
   }
 
   @override
@@ -38,7 +43,7 @@ class _CalendarioWidgetState extends State<CalendarioWidget> {
   }
 
   DateTime _mesFromPagina(int pagina) {
-    final diff = pagina - _paginaInicial;
+    final diff = pagina - _paginaBase;
     final agora = DateTime.now();
     int mes = agora.month + diff;
     int ano = agora.year;
@@ -57,7 +62,9 @@ class _CalendarioWidgetState extends State<CalendarioWidget> {
     return widget.tasks.where((t) {
       try {
         final dt = DateTime.parse(t.dataPrevista);
-        return dt.year == dia.year && dt.month == dia.month && dt.day == dia.day;
+        return dt.year == dia.year &&
+            dt.month == dia.month &&
+            dt.day == dia.day;
       } catch (_) {
         return false;
       }
@@ -69,7 +76,9 @@ class _CalendarioWidgetState extends State<CalendarioWidget> {
       case 'baixa':
         return const Color(0xFF43A047);
       case 'alta':
-        return importante ? const Color(0xFF8B0000) : const Color(0xFFE53935);
+        return importante
+            ? const Color(0xFF8B0000)
+            : const Color(0xFFE53935);
       default:
         return const Color(0xFFFDD835);
     }
@@ -79,7 +88,8 @@ class _CalendarioWidgetState extends State<CalendarioWidget> {
     final tasks = _tasksNoDia(dia).where((t) => !t.realizada).toList();
     if (tasks.isEmpty) return Colors.transparent;
 
-    bool temEmergencia = tasks.any((t) => t.prioridade == 'alta' && t.importante);
+    bool temEmergencia =
+        tasks.any((t) => t.prioridade == 'alta' && t.importante);
     if (temEmergencia) return const Color(0xFF8B0000);
 
     bool temAlta = tasks.any((t) => t.prioridade == 'alta');
@@ -113,10 +123,11 @@ class _CalendarioWidgetState extends State<CalendarioWidget> {
             final agora = DateTime.now();
             setState(() {
               _mesSelecionado = DateTime(agora.year, agora.month);
-              _diaSelecionado = DateTime(agora.year, agora.month, agora.day);
+              _diaSelecionado =
+                  DateTime(agora.year, agora.month, agora.day);
             });
             _pageController.animateToPage(
-              _paginaInicial,
+              _paginaBase,
               duration: const Duration(milliseconds: 400),
               curve: Curves.easeInOut,
             );
@@ -197,7 +208,8 @@ class _CabecalhoMes extends StatelessWidget {
           TextButton(
             onPressed: onHoje,
             style: TextButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               minimumSize: Size.zero,
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
@@ -207,13 +219,15 @@ class _CabecalhoMes extends StatelessWidget {
             icon: const Icon(Icons.chevron_left, size: 22),
             onPressed: onAnterior,
             padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+            constraints:
+                const BoxConstraints(minWidth: 32, minHeight: 32),
           ),
           IconButton(
             icon: const Icon(Icons.chevron_right, size: 22),
             onPressed: onProximo,
             padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+            constraints:
+                const BoxConstraints(minWidth: 32, minHeight: 32),
           ),
         ],
       ),
@@ -306,7 +320,8 @@ class _GradeMes extends StatelessWidget {
                         color: ehSelecionado
                             ? const Color(0xFF820AD1)
                             : ehHoje
-                                ? const Color(0xFF820AD1).withValues(alpha: 0.12)
+                                ? const Color(0xFF820AD1)
+                                    .withValues(alpha: 0.12)
                                 : Colors.transparent,
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -369,7 +384,8 @@ class _ListaDoDia extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final titulo = DateFormat("EEEE, d 'de' MMMM", 'pt_BR').format(dia);
+    final titulo =
+        DateFormat("EEEE, d 'de' MMMM", 'pt_BR').format(dia);
     final tituloFmt = titulo[0].toUpperCase() + titulo.substring(1);
 
     return Column(
@@ -407,12 +423,15 @@ class _ListaDoDia extends StatelessWidget {
         else
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               itemCount: tasks.length,
               itemBuilder: (context, i) {
                 final task = tasks[i];
-                final cor = prioridadeCor(task.prioridade, task.importante);
-                final ehEmergencia = task.prioridade == 'alta' && task.importante;
+                final cor =
+                    prioridadeCor(task.prioridade, task.importante);
+                final ehEmergencia =
+                    task.prioridade == 'alta' && task.importante;
 
                 return GestureDetector(
                   onTap: () => onTaskTap(task),
@@ -439,7 +458,8 @@ class _ListaDoDia extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment:
+                                  CrossAxisAlignment.start,
                               children: [
                                 Row(
                                   children: [
@@ -456,7 +476,8 @@ class _ListaDoDia extends StatelessWidget {
                                           fontSize: 14,
                                           fontWeight: FontWeight.w600,
                                           decoration: task.realizada
-                                              ? TextDecoration.lineThrough
+                                              ? TextDecoration
+                                                  .lineThrough
                                               : null,
                                           color: task.realizada
                                               ? Colors.grey
