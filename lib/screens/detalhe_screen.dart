@@ -30,14 +30,15 @@ class DetalheScreen extends StatelessWidget {
       ),
       body: Consumer<TaskProvider>(
         builder: (context, provider, _) {
-          // Get the latest version of the task from the provider
           final current = provider.tasks
               .cast<Task?>()
               .firstWhere((t) => t?.id == task.id, orElse: () => null);
 
           if (current == null) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.pop(context);
+              if (Navigator.canPop(context)) {
+                Navigator.popUntil(context, ModalRoute.withName('/lista'));
+              }
             });
             return const SizedBox.shrink();
           }
@@ -47,10 +48,8 @@ class DetalheScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Status banner
                 _StatusBanner(task: current),
                 const SizedBox(height: 20),
-                // Title card
                 _InfoCard(
                   icon: Icons.title_rounded,
                   label: 'Título',
@@ -59,7 +58,6 @@ class DetalheScreen extends StatelessWidget {
                       fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 12),
-                // ID (shown only on detail screen as per requirement)
                 _InfoCard(
                   icon: Icons.tag_rounded,
                   label: 'ID',
@@ -68,7 +66,6 @@ class DetalheScreen extends StatelessWidget {
                       TextStyle(fontSize: 16, color: Colors.grey.shade600),
                 ),
                 const SizedBox(height: 12),
-                // Description (shown only on detail screen)
                 _InfoCard(
                   icon: Icons.description_outlined,
                   label: 'Descrição',
@@ -78,7 +75,6 @@ class DetalheScreen extends StatelessWidget {
                   valueStyle: const TextStyle(fontSize: 15, height: 1.5),
                 ),
                 const SizedBox(height: 12),
-                // Date
                 _InfoCard(
                   icon: Icons.calendar_month_outlined,
                   label: 'Data prevista',
@@ -95,7 +91,6 @@ class DetalheScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 12),
-                // Priority
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(16),
@@ -122,7 +117,10 @@ class DetalheScreen extends StatelessWidget {
                                     fontSize: 12,
                                     fontWeight: FontWeight.w600)),
                             const SizedBox(height: 4),
-                            PriorityBadge(prioridade: current.prioridade),
+                            PriorityBadge(
+                              prioridade: current.prioridade,
+                              importante: current.importante,
+                            ),
                           ],
                         ),
                       ),
@@ -143,7 +141,6 @@ class DetalheScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 32),
-                // Action buttons
                 if (!current.realizada)
                   SizedBox(
                     width: double.infinity,
@@ -266,8 +263,8 @@ class _StatusBanner extends StatelessWidget {
       icon = Icons.warning_amber_rounded;
       label = 'Atrasada';
     } else {
-      bg = Colors.blue.shade50;
-      fg = Colors.blue.shade700;
+      bg = const Color(0xFFF3E8FF);
+      fg = const Color(0xFF820AD1);
       icon = Icons.pending_outlined;
       label = 'Pendente';
     }

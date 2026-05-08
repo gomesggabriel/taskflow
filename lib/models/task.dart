@@ -2,10 +2,10 @@ class Task {
   int? id;
   String titulo;
   String descricao;
-  String dataPrevista; // stored as 'yyyy-MM-dd' text in SQLite
+  String dataPrevista;
   bool importante;
   bool realizada;
-  String prioridade; // atributo extra: 'baixa', 'media', 'alta'
+  String prioridade;
 
   Task({
     this.id,
@@ -62,6 +62,8 @@ class Task {
   }
 
   DateTime get dataDateTime => DateTime.parse(dataPrevista);
+
+  bool get ehEmergencia => prioridade == 'alta' && importante;
 
   bool get atrasada {
     final hoje = DateTime.now();

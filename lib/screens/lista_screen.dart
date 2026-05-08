@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../providers/task_provider.dart';
 import '../models/task.dart';
 import '../widgets/task_card.dart';
+import '../widgets/calendario_widget.dart';
 
 class ListaScreen extends StatelessWidget {
   const ListaScreen({super.key});
@@ -33,7 +34,7 @@ class ListaScreen extends StatelessWidget {
           builder: (context, provider, _) {
             return TabBarView(
               children: [
-                _TaskList(tasks: provider.tasks.toList()),
+                _CalendarioTab(tasks: provider.tasks.toList()),
                 _TaskList(tasks: provider.importantes),
                 _TaskList(tasks: provider.realizadas),
                 _TaskList(tasks: provider.naoRealizadas),
@@ -48,6 +49,21 @@ class ListaScreen extends StatelessWidget {
           label: const Text('Nova tarefa'),
         ),
       ),
+    );
+  }
+}
+
+class _CalendarioTab extends StatelessWidget {
+  final List<Task> tasks;
+
+  const _CalendarioTab({required this.tasks});
+
+  @override
+  Widget build(BuildContext context) {
+    return CalendarioWidget(
+      tasks: tasks,
+      onTaskTap: (task) =>
+          Navigator.pushNamed(context, '/detalhe', arguments: task),
     );
   }
 }
@@ -82,8 +98,8 @@ class _TaskList extends StatelessWidget {
         final task = tasks[index];
         return TaskCard(
           task: task,
-          onTap: () => Navigator.pushNamed(context, '/detalhe',
-              arguments: task),
+          onTap: () =>
+              Navigator.pushNamed(context, '/detalhe', arguments: task),
           onDelete: () =>
               context.read<TaskProvider>().deleteTask(task.id!),
         );

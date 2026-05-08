@@ -18,7 +18,7 @@ class WelcomeScreen extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0xFF1565C0), Color(0xFF42A5F5)],
+            colors: [Color(0xFF820AD1), Color(0xFFBB6BD9)],
           ),
         ),
         child: SafeArea(
@@ -28,7 +28,6 @@ class WelcomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Spacer(),
-                // Logo
                 Container(
                   width: 100,
                   height: 100,
@@ -57,7 +56,6 @@ class WelcomeScreen extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 const Spacer(),
-                // Nearest task card
                 if (proxima != null) ...[
                   Container(
                     width: double.infinity,
@@ -132,7 +130,6 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 28),
                 ],
-                // Enter button
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(

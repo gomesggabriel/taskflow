@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/task.dart';
 
-/// Custom card widget for displaying a task in the list
 class TaskCard extends StatelessWidget {
   final Task task;
   final VoidCallback onTap;
@@ -80,7 +79,6 @@ class TaskCard extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: Row(
               children: [
-                // Status icon
                 Container(
                   width: 44,
                   height: 44,
@@ -91,7 +89,6 @@ class TaskCard extends StatelessWidget {
                   child: Icon(_statusIcon(), color: _statusColor(), size: 24),
                 ),
                 const SizedBox(width: 14),
-                // Title and date
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,9 +125,7 @@ class TaskCard extends StatelessWidget {
                         children: [
                           Icon(Icons.calendar_today_outlined,
                               size: 13,
-                              color: atrasada
-                                  ? Colors.red
-                                  : Colors.grey.shade500),
+                              color: _calendarColor()),
                           const SizedBox(width: 4),
                           Text(
                             _formatDate(task.dataPrevista),
@@ -168,8 +163,10 @@ class TaskCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                // Priority badge
-                PriorityBadge(prioridade: task.prioridade),
+                PriorityBadge(
+                  prioridade: task.prioridade,
+                  importante: task.importante,
+                ),
               ],
             ),
           ),
@@ -178,11 +175,25 @@ class TaskCard extends StatelessWidget {
     );
   }
 
+  Color _calendarColor() {
+    if (task.atrasada) return Colors.red;
+    switch (task.prioridade) {
+      case 'baixa':
+        return Colors.green.shade600;
+      case 'alta':
+        return task.importante
+            ? const Color(0xFF8B0000)
+            : Colors.red.shade600;
+      default:
+        return Colors.yellow.shade700;
+    }
+  }
+
   Color _statusColor() {
     if (task.realizada) return Colors.green;
     if (task.atrasada) return Colors.red;
     if (task.importante) return Colors.amber.shade700;
-    return Colors.blue;
+    return const Color(0xFF820AD1);
   }
 
   IconData _statusIcon() {
@@ -202,11 +213,15 @@ class TaskCard extends StatelessWidget {
   }
 }
 
-/// Reusable priority badge widget
 class PriorityBadge extends StatelessWidget {
   final String prioridade;
+  final bool importante;
 
-  const PriorityBadge({super.key, required this.prioridade});
+  const PriorityBadge({
+    super.key,
+    required this.prioridade,
+    this.importante = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -241,27 +256,28 @@ class PriorityBadge extends StatelessWidget {
   Color _bgColor() {
     switch (prioridade) {
       case 'alta':
-        return Colors.red.shade50;
+        return importante
+            ? const Color(0xFF8B0000).withValues(alpha: 0.12)
+            : Colors.red.shade50;
       case 'baixa':
         return Colors.green.shade50;
       default:
-        return Colors.orange.shade50;
+        return Colors.yellow.shade50;
     }
   }
 
   Color _textColor() {
     switch (prioridade) {
       case 'alta':
-        return Colors.red.shade700;
+        return importante ? const Color(0xFF8B0000) : Colors.red.shade700;
       case 'baixa':
         return Colors.green.shade700;
       default:
-        return Colors.orange.shade800;
+        return Colors.yellow.shade900;
     }
   }
 }
 
-/// Reusable styled button
 class AppButton extends StatelessWidget {
   final String label;
   final IconData icon;
@@ -293,7 +309,6 @@ class AppButton extends StatelessWidget {
   }
 }
 
-/// Reusable form field with label
 class LabeledField extends StatelessWidget {
   final String label;
   final Widget child;

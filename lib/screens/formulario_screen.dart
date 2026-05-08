@@ -87,7 +87,6 @@ class _FormularioScreenState extends State<FormularioScreen> {
         dataPrevista: dataStr,
         importante: _importante,
         prioridade: _prioridade,
-        // NOTE: 'realizada' cannot be edited here (requirement 4)
       );
       await provider.updateTask(updated);
       if (mounted) {
@@ -137,7 +136,6 @@ class _FormularioScreenState extends State<FormularioScreen> {
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            // Title
             _SectionLabel(label: 'Título *'),
             TextFormField(
               controller: _tituloCtrl,
@@ -149,7 +147,6 @@ class _FormularioScreenState extends State<FormularioScreen> {
             ),
             const SizedBox(height: 20),
 
-            // Description
             _SectionLabel(label: 'Descrição'),
             TextFormField(
               controller: _descricaoCtrl,
@@ -160,7 +157,6 @@ class _FormularioScreenState extends State<FormularioScreen> {
             ),
             const SizedBox(height: 20),
 
-            // Date picker
             _SectionLabel(label: 'Data Prevista *'),
             GestureDetector(
               onTap: _pickDate,
@@ -198,7 +194,6 @@ class _FormularioScreenState extends State<FormularioScreen> {
             ),
             const SizedBox(height: 20),
 
-            // Priority
             _SectionLabel(label: 'Prioridade (atributo extra)'),
             Container(
               decoration: BoxDecoration(
@@ -239,7 +234,6 @@ class _FormularioScreenState extends State<FormularioScreen> {
             ),
             const SizedBox(height: 20),
 
-            // Importante switch
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -262,26 +256,25 @@ class _FormularioScreenState extends State<FormularioScreen> {
               ),
             ),
 
-            // Edit-only note
             if (_isEditing)
               Padding(
                 padding: const EdgeInsets.only(top: 12),
                 child: Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.blue.shade50,
+                    color: const Color(0xFFF3E8FF),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.info_outline,
-                          color: Colors.blue.shade600, size: 18),
+                      const Icon(Icons.info_outline,
+                          color: Color(0xFF820AD1), size: 18),
                       const SizedBox(width: 8),
-                      Expanded(
+                      const Expanded(
                         child: Text(
                           'Para marcar como realizada, vá aos detalhes da tarefa.',
                           style: TextStyle(
-                              color: Colors.blue.shade800, fontSize: 13),
+                              color: Color(0xFF5C0093), fontSize: 13),
                         ),
                       ),
                     ],

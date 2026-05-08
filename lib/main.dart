@@ -35,13 +35,13 @@ class TaskFlowApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF1565C0),
+          seedColor: const Color(0xFF820AD1),
           brightness: Brightness.light,
         ),
         scaffoldBackgroundColor: const Color(0xFFF4F6FA),
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.white,
-          foregroundColor: Color(0xFF1565C0),
+          foregroundColor: Color(0xFF820AD1),
           surfaceTintColor: Colors.transparent,
           elevation: 0,
         ),
@@ -59,7 +59,6 @@ class TaskFlowApp extends StatelessWidget {
           ),
         ),
       ),
-      
       initialRoute: '/',
       routes: {
         '/': (_) => const WelcomeScreen(),

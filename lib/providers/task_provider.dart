@@ -14,7 +14,6 @@ class TaskProvider extends ChangeNotifier {
   List<Task> get atrasadas => _tasks.where((t) => t.atrasada).toList();
   List<Task> get naoAtrasadas => _tasks.where((t) => !t.atrasada).toList();
 
-  /// Returns the task with the nearest upcoming due date (not completed)
   Task? get proximaTarefa {
     final pendentes = _tasks.where((t) => !t.realizada).toList();
     if (pendentes.isEmpty) return null;
